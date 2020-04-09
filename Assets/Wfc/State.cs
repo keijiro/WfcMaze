@@ -1,4 +1,4 @@
-namespace WfcMaze
+namespace Wfc
 {
     struct State
     {

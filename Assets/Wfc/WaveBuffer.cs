@@ -1,7 +1,7 @@
 using System.Linq;
 using Unity.Mathematics;
 
-namespace WfcMaze
+namespace Wfc
 {
     struct WaveBuffer
     {

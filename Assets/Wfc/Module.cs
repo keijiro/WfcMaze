@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace WfcMaze
+namespace Wfc
 {
     static class ModuleRegistry
     {

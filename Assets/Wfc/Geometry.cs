@@ -1,7 +1,7 @@
 using System.Linq;
 using Unity.Mathematics;
 
-namespace WfcMaze
+namespace Wfc
 {
     // Direction enums
     // Axis [X/Y/Z] + Sign [P/N]

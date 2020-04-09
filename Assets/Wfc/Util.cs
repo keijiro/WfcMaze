@@ -1,4 +1,4 @@
-namespace WfcMaze
+namespace Wfc
 {
     static class Util
     {

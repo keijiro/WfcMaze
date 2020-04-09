@@ -1,8 +1,8 @@
-namespace WfcMaze
+namespace Wfc
 {
     unsafe struct BitField
     {
-        const int Length = 16;
+        const int Length = 4;
         fixed ulong _fields[Length];
 
         public bool CheckBit(int n)

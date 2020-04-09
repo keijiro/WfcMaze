@@ -1,6 +1,6 @@
 using Unity.Mathematics;
 
-namespace WfcMaze
+namespace Wfc
 {
     // Connectivity information
     struct Connectivity
