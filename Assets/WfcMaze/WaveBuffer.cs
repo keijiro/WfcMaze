@@ -65,20 +65,20 @@ namespace WfcMaze
         {
             // Retrieve the wave state.
             var state = RefWave(x, y, z).ObservedState;
-            var mask = ModuleRegistry.GetMask(state.Index);
-            mask = mask.GetRotated(state.Pose);
+            var conn = ModuleRegistry.GetConnectivity(state.Index);
+            conn = conn.GetRotated(state.Pose);
 
             // Boundary check
             var coord = math.int3(x, y, z);
             var bl = coord > 0;
             var bh = coord < _dims - 1;
 
-            if (bl.x) RefWave(x - 1, y, z).ForceDirection(Direction.XP, mask.CheckMasked(Direction.XN));
-            if (bh.x) RefWave(x + 1, y, z).ForceDirection(Direction.XN, mask.CheckMasked(Direction.XP));
-            if (bl.y) RefWave(x, y - 1, z).ForceDirection(Direction.YP, mask.CheckMasked(Direction.YN));
-            if (bh.y) RefWave(x, y + 1, z).ForceDirection(Direction.YN, mask.CheckMasked(Direction.YP));
-            if (bl.z) RefWave(x, y, z - 1).ForceDirection(Direction.ZP, mask.CheckMasked(Direction.ZN));
-            if (bh.z) RefWave(x, y, z + 1).ForceDirection(Direction.ZN, mask.CheckMasked(Direction.ZP));
+            if (bl.x) RefWave(x - 1, y, z).ForceDirection(Direction.XP, conn.Check(Direction.XN));
+            if (bh.x) RefWave(x + 1, y, z).ForceDirection(Direction.XN, conn.Check(Direction.XP));
+            if (bl.y) RefWave(x, y - 1, z).ForceDirection(Direction.YP, conn.Check(Direction.YN));
+            if (bh.y) RefWave(x, y + 1, z).ForceDirection(Direction.YN, conn.Check(Direction.YP));
+            if (bl.z) RefWave(x, y, z - 1).ForceDirection(Direction.ZP, conn.Check(Direction.ZN));
+            if (bh.z) RefWave(x, y, z + 1).ForceDirection(Direction.ZN, conn.Check(Direction.ZP));
         }
 
         #endregion

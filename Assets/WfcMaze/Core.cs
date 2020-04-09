@@ -36,12 +36,12 @@ namespace WfcMaze
 
                 var state = State.Encoded(i);
 
-                var mask = ModuleRegistry
-                    .GetMask(state.Index).GetRotated(state.Pose);
+                var connectivity = ModuleRegistry
+                    .GetConnectivity(state.Index).GetRotated(state.Pose);
 
-                var masked = mask.CheckMasked(dir);
+                var connectable = connectivity.Check(dir);
 
-                if (masked != flag) _bitField.ClearBit(i);
+                if (connectable != flag) _bitField.ClearBit(i);
             }
         }
     }

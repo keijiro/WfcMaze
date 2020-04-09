@@ -1,7 +1,5 @@
 using System.Linq;
-using UnityEngine;
 using Unity.Mathematics;
-using Random = Unity.Mathematics.Random;
 
 namespace WfcMaze
 {
@@ -16,35 +14,6 @@ namespace WfcMaze
                 YN_XN_ZP, YN_XP_ZN, YN_XN_ZN, YN_ZN_XP,
                 ZP_YP_XN, ZP_XN_YN, ZP_YN_XP, ZP_XP_YP,
                 ZN_YP_XP, ZN_XP_YN, ZN_YN_XN, ZN_XN_YP }
-
-    struct DirectionMask
-    {
-        uint _encoded;
-
-        public DirectionMask
-          (bool xn, bool xp, bool yn, bool yp, bool zn, bool zp)
-          => _encoded = (xn ? 0x01u : 0u) | (xp ? 0x02u : 0u) |
-                        (yn ? 0x04u : 0u) | (yp ? 0x08u : 0u) |
-                        (zn ? 0x10u : 0u) | (zp ? 0x20u : 0u);
-
-        public DirectionMask(uint encoded) => _encoded = encoded;
-
-        public DirectionMask GetRotated(Pose pose) => Rotate(pose, this);
-
-        public bool CheckMasked(Direction dir)
-          => (_encoded & (1u << (int)dir)) != 0u;
-
-        public static DirectionMask Rotate(Pose pose, DirectionMask source)
-        {
-            var mask = 0u;
-            for (var i = 0; i < Geometry.DirectionCount; i++)
-            {
-                if ((source._encoded & (1u << i)) == 0u) continue;
-                mask |= 1u << (int)Geometry.Rotate((Direction)i, pose);
-            }
-            return new DirectionMask(mask);
-        }
-    }
 
     static class Geometry
     {

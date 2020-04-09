@@ -4,12 +4,12 @@ namespace WfcMaze
 {
     static class ModuleRegistry
     {
-        public static int Count => _masks.Count;
+        public static int Count => _modules.Count;
 
-        public static DirectionMask GetMask(int i) => _masks[i];
+        public static Connectivity GetConnectivity(int i) => _modules[i];
 
-        public static void AddModule(DirectionMask mask) => _masks.Add(mask);
+        public static void AddModule(Connectivity conn) => _modules.Add(conn);
 
-        static List<DirectionMask> _masks = new List<DirectionMask>();
+        static List<Connectivity> _modules = new List<Connectivity>();
     }
 }

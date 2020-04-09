@@ -16,15 +16,15 @@ namespace WfcMaze
         {
             // Empty
             ModuleRegistry.AddModule
-              (new DirectionMask(false, false, false, false, false, false));
+              (new Connectivity(false, false, false, false, false, false));
 
             // I bar
             ModuleRegistry.AddModule
-              (new DirectionMask(false, false, false, false, true, true));
+              (new Connectivity(false, false, false, false, true, true));
 
             // L bar
             ModuleRegistry.AddModule
-              (new DirectionMask(false, true, false, false, true, false));
+              (new Connectivity(false, true, false, false, true, false));
 
             _waveBuffer = new WaveBuffer(_size, _size, _size);
 
