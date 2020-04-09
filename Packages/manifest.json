@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.unity.burst": "1.2.3",
+    "com.unity.render-pipelines.high-definition": "7.3.1",
     "com.unity.mathematics": "1.1.0"
   }
 }
