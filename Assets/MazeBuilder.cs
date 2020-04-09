@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.Mathematics;
+using Wfc;
 
 sealed class MazeBuilder : MonoBehaviour
 {
@@ -8,23 +9,23 @@ sealed class MazeBuilder : MonoBehaviour
     [SerializeField] Material _material = null;
     [SerializeField] int _size = 10;
 
-    Wfc.WaveBuffer _waveBuffer;
+    WaveBuffer _waveBuffer;
 
     System.Collections.IEnumerator Start()
     {
         // Empty
-        Wfc.ModuleRegistry.AddModule
-          (new Wfc.Connectivity(false, false, false, false, false, false));
+        ModuleRegistry.AddModule
+          (new Connectivity(false, false, false, false, false, false));
 
         // I bar
-        Wfc.ModuleRegistry.AddModule
-          (new Wfc.Connectivity(false, false, false, false, true, true));
+        ModuleRegistry.AddModule
+          (new Connectivity(false, false, false, false, true, true));
 
         // L bar
-        Wfc.ModuleRegistry.AddModule
-          (new Wfc.Connectivity(false, true, false, false, true, false));
+        ModuleRegistry.AddModule
+          (new Connectivity(false, true, false, false, true, false));
 
-        _waveBuffer = new Wfc.WaveBuffer(_size, _size, _size);
+        _waveBuffer = new WaveBuffer(_size, _size, _size);
 
         _waveBuffer.Collapse(_size / 2, _size / 2, _size / 2);
 
@@ -53,8 +54,9 @@ sealed class MazeBuilder : MonoBehaviour
 
         var mesh = state.Index == 1 ? _iMesh : _lMesh;
         var pos = math.float3(ix, iy, iz);
+        var rot = state.Pose.ToRotation();
+
         pos -= math.float3(0.5f, 0.5f, 0.5f) * _size;
-        var rot = Wfc.Geometry.ToRotation(state.Pose);
 
         Graphics.DrawMesh(mesh, pos, rot, _material, gameObject.layer);
     }

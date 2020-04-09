@@ -3,7 +3,7 @@ using Unity.Mathematics;
 
 namespace Wfc
 {
-    struct WaveBuffer
+    public struct WaveBuffer
     {
         #region Public members
 

@@ -2,16 +2,15 @@ namespace Wfc
 {
     unsafe struct BitField
     {
-        const int Length = 4;
-        fixed ulong _fields[Length];
+        #region Public methods
 
-        public bool CheckBit(int n)
+        public bool GetBit(int n)
           => (_fields[n / 64] & (1ul << (n % 64))) != 0ul;
 
         public void SetBit(int n)
           => _fields[n / 64] |= 1ul << (n % 64);
 
-        public void ClearBit(int n)
+        public void UnsetBit(int n)
           => _fields[n / 64] &= ~(1ul << (n % 64));
 
         public void Clear()
@@ -37,8 +36,17 @@ namespace Wfc
         {
             var count = 0;
             for (var i = 0; i < Length * 64; i++)
-                if (CheckBit(i) && count++ == n) return i;
+                if (GetBit(i) && count++ == n) return i;
             return -1;
         }
+
+        #endregion
+
+        #region Internal data
+
+        const int Length = 4;
+        fixed ulong _fields[Length];
+
+        #endregion
     }
 }

@@ -3,16 +3,12 @@ using Unity.Mathematics;
 
 namespace Wfc
 {
-    struct Wave
+    public struct Wave
     {
+        #region Public members
+
         public bool IsObserved => _observed.IsDetermined;
         public State ObservedState => _observed;
-
-        static Random _random = new Random(0xff332);
-
-        BitField _bitField;
-        State _observed;
-
         public float Entropy => _bitField.CountBits();
 
         public void Reset()
@@ -24,25 +20,33 @@ namespace Wfc
         public void Collapse()
         {
             var count = _bitField.CountBits();
-            var select = _bitField.FindNthOne(_random.NextInt(count));
-            _observed = State.Encoded(select);
+            var state = _bitField.FindNthOne(_random.NextInt(count));
+            _observed = State.NewEncoded(state);
         }
 
         public void ForceDirection(Direction dir, bool flag)
         {
             for (var i = 0; i < State.Count; i++)
             {
-                if (!_bitField.CheckBit(i)) continue;
+                if (!_bitField.GetBit(i)) continue;
 
-                var state = State.Encoded(i);
-
+                var state = State.NewEncoded(i);
                 var connectivity = ModuleRegistry
                     .GetConnectivity(state.Index).GetRotated(state.Pose);
 
-                var connectable = connectivity.Check(dir);
-
-                if (connectable != flag) _bitField.ClearBit(i);
+                if (connectivity.Check(dir) != flag) _bitField.UnsetBit(i);
             }
         }
+
+        #endregion
+
+        #region Private members
+
+        static Random _random = new Random(0xdeadbeef);
+
+        BitField _bitField;
+        State _observed;
+
+        #endregion
     }
 }
