@@ -17,7 +17,7 @@ namespace Wfc
         public Wave GetWave(int x, int y, int z)
           => _waves[CoordsToIndex(x, y, z)];
 
-        public void CollapseMinimumEntropyWave()
+        public void Observe()
         {
             var min_e = 1e+6f;
             var min_i = -1;
@@ -25,7 +25,7 @@ namespace Wfc
             for (var i = 0; i < _waves.Length; i++)
             {
                 if (_waves[i].IsObserved) continue;
-                var e = _waves[i].Entropy;
+                var e = _waves[i].Entropy + _random.NextFloat(0.5f);
                 if (e < min_e)
                 {
                     min_e = e;
@@ -36,18 +36,15 @@ namespace Wfc
             if (min_i < 0) return;
 
             var coords = IndexToCoords(min_i);
-            Collapse(coords.x, coords.y, coords.z);
-        }
-
-        public void Collapse(int x, int y, int z)
-        {
-            RefWave(x, y, z).Collapse();
-            Propagate(x, y, z);
+            RefWave(coords.x, coords.y, coords.z).Collapse();
+            Propagate(coords.x, coords.y, coords.z);
         }
 
         #endregion
 
         #region Private members
+
+        static Random _random = new Random(0xdeadbee1);
 
         int3 _dims;
         Wave[] _waves;

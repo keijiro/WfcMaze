@@ -27,11 +27,9 @@ sealed class MazeBuilder : MonoBehaviour
 
         _waveBuffer = new WaveBuffer(_size, _size, _size);
 
-        _waveBuffer.Collapse(_size / 2, _size / 2, _size / 2);
-
         while (true)
         {
-            _waveBuffer.CollapseMinimumEntropyWave();
+            _waveBuffer.Observe();
             yield return null;
         }
     }
