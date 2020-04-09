@@ -93,8 +93,8 @@ namespace WfcMaze
             .ToArray();
 
         static Direction RotatedDirection(Pose pose, Direction dir)
-          => ToDirection((int3)math.mul(CalculatePoseRotation(pose),
-                                        ToVector(dir)));
+          => ToDirection((int3)math.round(
+                 math.mul(CalculatePoseRotation(pose), ToVector(dir))));
 
         static quaternion CalculatePoseRotation(Pose pose)
         {
