@@ -7,11 +7,38 @@ namespace Wfc
     {
         #region Public members
 
-        public WaveBuffer(int sizeX, int sizeY, int sizeZ)
+        public WaveBuffer(int sizeX, int sizeY, int sizeZ, uint seed)
         {
             _dims = math.int3(sizeX, sizeY, sizeZ);
             _waves = new Wave[sizeX * sizeY * sizeZ];
+            _random = new Random(seed);
+
+            // Reset all the waves.
             for (var i = 0; i < _waves.Length; i++) _waves[i].Reset();
+
+            // X boundaries
+            for (var y = 0; y < sizeY; y++)
+                for (var z = 0; z < sizeZ; z++)
+                {
+                    RefWave(        0, y, z).ForceDirection(Direction.XN, false);
+                    RefWave(sizeX - 1, y, z).ForceDirection(Direction.XP, false);
+                }
+
+            // Y boundaries
+            for (var x = 0; x < sizeX; x++)
+                for (var z = 0; z < sizeZ; z++)
+                {
+                    RefWave(x,         0, z).ForceDirection(Direction.YN, false);
+                    RefWave(x, sizeY - 1, z).ForceDirection(Direction.YP, false);
+                }
+
+            // Z boundaries
+            for (var x = 0; x < sizeX; x++)
+                for (var y = 0; y < sizeY; y++)
+                {
+                    RefWave(x, y,         0).ForceDirection(Direction.ZN, false);
+                    RefWave(x, y, sizeZ - 1).ForceDirection(Direction.ZP, false);
+                }
         }
 
         public Wave GetWave(int x, int y, int z)
@@ -36,7 +63,7 @@ namespace Wfc
             if (min_i < 0) return;
 
             var coords = IndexToCoords(min_i);
-            RefWave(coords.x, coords.y, coords.z).Collapse();
+            RefWave(coords.x, coords.y, coords.z).Collapse(_random.NextUInt());
             Propagate(coords.x, coords.y, coords.z);
         }
 
@@ -44,10 +71,9 @@ namespace Wfc
 
         #region Private members
 
-        static Random _random = new Random(0xdeadbee1);
-
         int3 _dims;
         Wave[] _waves;
+        Random _random;
 
         int3 IndexToCoords(int i) => math.int3
           (i % _dims.x, (i / _dims.x) % _dims.y, i / (_dims.x * _dims.y));

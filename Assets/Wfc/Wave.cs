@@ -17,10 +17,18 @@ namespace Wfc
             _observed = State.Undetermined;
         }
 
-        public void Collapse()
+        public void Collapse(uint random)
         {
             var count = _bitField.CountBits();
-            var state = _bitField.FindNthOne(_random.NextInt(count));
+
+            if (count == 0)
+            {
+                UnityEngine.Debug.Log("Contradiction found. Skipping.");
+                _observed = State.NewEncoded(0);
+                return;
+            }
+
+            var state = _bitField.FindNthOne((int)(random % count));
             _observed = State.NewEncoded(state);
         }
 
@@ -41,8 +49,6 @@ namespace Wfc
         #endregion
 
         #region Private members
-
-        static Random _random = new Random(0xdeadbeef);
 
         BitField _bitField;
         State _observed;

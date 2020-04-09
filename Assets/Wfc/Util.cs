@@ -1,3 +1,5 @@
+using Unity.Mathematics;
+
 namespace Wfc
 {
     static class Util

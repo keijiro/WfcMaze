@@ -8,6 +8,7 @@ sealed class MazeBuilder : MonoBehaviour
     [SerializeField] Mesh _lMesh = null;
     [SerializeField] Material _material = null;
     [SerializeField] int _size = 10;
+    [SerializeField] uint _seed = 1234;
 
     WaveBuffer _waveBuffer;
 
@@ -25,7 +26,7 @@ sealed class MazeBuilder : MonoBehaviour
         ModuleRegistry.AddModule
           (new Connectivity(false, true, false, false, true, false));
 
-        _waveBuffer = new WaveBuffer(_size, _size, _size);
+        _waveBuffer = new WaveBuffer(_size, _size, _size, _seed);
 
         while (true)
         {
