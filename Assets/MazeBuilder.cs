@@ -6,11 +6,23 @@ sealed class MazeBuilder : MonoBehaviour
 {
     [SerializeField] Mesh _iMesh = null;
     [SerializeField] Mesh _lMesh = null;
+    [SerializeField] Mesh _tMesh = null;
     [SerializeField] Material _material = null;
     [SerializeField] int _size = 10;
     [SerializeField] uint _seed = 1234;
 
     WaveBuffer _waveBuffer;
+
+    Mesh GetMesh(int index)
+    {
+        switch (index)
+        {
+            case 1: return _iMesh;
+            case 2: return _lMesh;
+            case 3: return _tMesh;
+        }
+        return null;
+    }
 
     System.Collections.IEnumerator Start()
     {
@@ -25,6 +37,10 @@ sealed class MazeBuilder : MonoBehaviour
         // L bar
         ModuleRegistry.AddModule
           (new Connectivity(false, true, false, false, true, false));
+
+        // T bar
+        ModuleRegistry.AddModule
+          (new Connectivity(true, true, false, false, true, false));
 
         _waveBuffer = new WaveBuffer(_size, _size, _size, _seed);
 
@@ -51,7 +67,7 @@ sealed class MazeBuilder : MonoBehaviour
         var state = wave.ObservedState;
         if (state.Index == 0) return; // Empty
 
-        var mesh = state.Index == 1 ? _iMesh : _lMesh;
+        var mesh = GetMesh(state.Index);
         var pos = math.float3(ix, iy, iz);
         var rot = state.Pose.ToRotation();
 

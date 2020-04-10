@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 1.1795224, g: 1.139218, b: 1.2482258, a: 1}
+  m_IndirectSpecularColor: {r: 1.1795225, g: 1.139218, b: 1.2482259, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -212,11 +212,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c35a9637a83c0454190e77d5baef5aa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _iMesh: {fileID: -7860970787427425400, guid: ea9e87b83a9ac5f01b0c54ad97840040, type: 3}
-  _lMesh: {fileID: -6722424157972264426, guid: ec4e97843dd4282aab75036558e95705, type: 3}
+  _iMesh: {fileID: -6425600238377421303, guid: 90ba1380f677c9aa28ed7d9791342c63, type: 3}
+  _lMesh: {fileID: 2658800326358589857, guid: b2fce23be21f04afaa502ad3cc35c591, type: 3}
+  _tMesh: {fileID: -2020707242700487084, guid: 2425972b37c9e7cd7962b9f7e8a6b593, type: 3}
   _material: {fileID: 2100000, guid: 3a78d85400b25c017b4b91f06cf1c81c, type: 2}
   _size: 10
-  _seed: 1058
+  _seed: 886
 --- !u!4 &845180381
 Transform:
   m_ObjectHideFlags: 0
