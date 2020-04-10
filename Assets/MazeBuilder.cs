@@ -17,19 +17,15 @@ sealed class MazeBuilder : MonoBehaviour
     {
         switch (index)
         {
-            case 1: return _iMesh;
-            case 2: return _lMesh;
-            case 3: return _tMesh;
+            case 0: return _iMesh;
+            case 1: return _lMesh;
+            case 2: return _tMesh;
         }
         return null;
     }
 
     System.Collections.IEnumerator Start()
     {
-        // Empty
-        ModuleRegistry.AddModule
-          (new Connectivity(false, false, false, false, false, false));
-
         // I bar
         ModuleRegistry.AddModule
           (new Connectivity(false, false, false, false, true, true));
@@ -65,8 +61,6 @@ sealed class MazeBuilder : MonoBehaviour
         if (!wave.IsObserved) return;
 
         var state = wave.ObservedState;
-        if (state.Index == 0) return; // Empty
-
         var mesh = GetMesh(state.Index);
         var pos = math.float3(ix, iy, iz);
         var rot = state.Pose.ToRotation();
