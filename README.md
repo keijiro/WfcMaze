@@ -1,7 +1,7 @@
 WfcMaze
 -------
 
-![screenshot](https://imgur.com/6Wd3N2Z)
+![screenshot](https://i.imgur.com/6Wd3N2Z.png)
 
 This is an attempt at implementing a [WFC] (Wave Function Collapse) procedural
 model generator with Unity.
