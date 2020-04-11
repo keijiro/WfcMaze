@@ -29,12 +29,28 @@ MonoBehaviour:
       Top: 0
       Back: 1
       Front: 1
+  - Mesh: {fileID: -8409681152313394274, guid: 2974354b3735f19eda9293f8ce1540d3, type: 3}
+    Connectivity:
+      Left: 0
+      Right: 0
+      Bottom: 0
+      Top: 0
+      Back: 1
+      Front: 1
   - Mesh: {fileID: 2658800326358589857, guid: b2fce23be21f04afaa502ad3cc35c591, type: 3}
     Connectivity:
       Left: 0
       Right: 3
       Bottom: 0
       Top: 0
+      Back: 1
+      Front: 0
+  - Mesh: {fileID: 4104380202958562290, guid: 7828c0dca416ac0d5b14e6c1448e5b00, type: 3}
+    Connectivity:
+      Left: 0
+      Right: 0
+      Bottom: 0
+      Top: 1
       Back: 1
       Front: 0
   - Mesh: {fileID: 4104380202958562290, guid: 7828c0dca416ac0d5b14e6c1448e5b00, type: 3}
