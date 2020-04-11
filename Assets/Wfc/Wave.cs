@@ -32,7 +32,7 @@ namespace Wfc
             _observed = State.NewEncoded(state);
         }
 
-        public void ForceDirection(Direction dir, Axis? axis)
+        public void ForceDirection(Direction dir, Axis axis)
         {
             for (var i = 0; i < State.Count; i++)
             {

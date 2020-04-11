@@ -4,7 +4,7 @@ using Unity.Mathematics;
 namespace Wfc
 {
     // Axis enums
-    public enum Axis { X, Y, Z }
+    public enum Axis { None, X, Y, Z }
 
     // Direction enums
     // Axis [X/Y/Z] + Sign [P/N]
@@ -23,7 +23,7 @@ namespace Wfc
     {
         #region Count of enums
 
-        public const int AxisCount = 3;
+        public const int AxisCount = 4;
         public const int DirectionCount = 6;
         public const int PoseCount = 3 * 8;
 
@@ -39,7 +39,7 @@ namespace Wfc
                 case Axis.Y : return math.int3(0, 1, 0);
                 case Axis.Z : return math.int3(0, 0, 1);
             }
-            return 0; // Error
+            return 0;
         }
 
         public static int3 ToVector(this Direction d)
@@ -63,7 +63,8 @@ namespace Wfc
         {
             if (v.x != 0) return Axis.X;
             if (v.y != 0) return Axis.Y;
-            return Axis.Z;
+            if (v.z != 0) return Axis.Z;
+            return Axis.None;
         }
 
         public static Axis ToAxis(float3 v)
