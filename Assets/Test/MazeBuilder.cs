@@ -29,9 +29,9 @@ sealed class MazeBuilder : MonoBehaviour
 
     void Update()
     {
-        for (var iz = 0; iz < _size.x; iz++)
+        for (var iz = 0; iz < _size.z; iz++)
             for (var iy = 0; iy < _size.y; iy++)
-                for (var ix = 0; ix < _size.z; ix++)
+                for (var ix = 0; ix < _size.x; ix++)
                     DrawWave(ix, iy, iz);
     }
 
