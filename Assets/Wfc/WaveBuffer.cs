@@ -20,24 +20,24 @@ namespace Wfc
             for (var y = 0; y < sizeY; y++)
                 for (var z = 0; z < sizeZ; z++)
                 {
-                    RefWave(        0, y, z).ForceDirection(Direction.XN, false);
-                    RefWave(sizeX - 1, y, z).ForceDirection(Direction.XP, false);
+                    RefWave(        0, y, z).ForceDirection(Direction.XN, null);
+                    RefWave(sizeX - 1, y, z).ForceDirection(Direction.XP, null);
                 }
 
             // Y boundaries
             for (var x = 0; x < sizeX; x++)
                 for (var z = 0; z < sizeZ; z++)
                 {
-                    RefWave(x,         0, z).ForceDirection(Direction.YN, false);
-                    RefWave(x, sizeY - 1, z).ForceDirection(Direction.YP, false);
+                    RefWave(x,         0, z).ForceDirection(Direction.YN, null);
+                    RefWave(x, sizeY - 1, z).ForceDirection(Direction.YP, null);
                 }
 
             // Z boundaries
             for (var x = 0; x < sizeX; x++)
                 for (var y = 0; y < sizeY; y++)
                 {
-                    RefWave(x, y,         0).ForceDirection(Direction.ZN, false);
-                    RefWave(x, y, sizeZ - 1).ForceDirection(Direction.ZP, false);
+                    RefWave(x, y,         0).ForceDirection(Direction.ZN, null);
+                    RefWave(x, y, sizeZ - 1).ForceDirection(Direction.ZP, null);
                 }
         }
 

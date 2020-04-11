@@ -8,14 +8,14 @@ namespace Wfc
         #region Public methods
 
         public Connectivity
-          (bool xn, bool xp, bool yn, bool yp, bool zn, bool zp)
-          => _encoded = (xn ? 0x01u : 0u) | (xp ? 0x02u : 0u) |
-                        (yn ? 0x04u : 0u) | (yp ? 0x08u : 0u) |
-                        (zn ? 0x10u : 0u) | (zp ? 0x20u : 0u);
+          (Axis? xn, Axis? xp, Axis? yn, Axis? yp, Axis? zn, Axis? zp)
+          => _encoded = Convert(xn)      | Convert(xp) <<  2 |
+                        Convert(yn) << 4 | Convert(yp) <<  6 |
+                        Convert(zn) << 8 | Convert(zp) << 10;
 
-        public bool this[Direction dir]
+        public Axis? this[Direction dir]
         {
-            get => (_encoded & (1u << (int)dir)) != 0u;
+            get => GetDirection(dir);
             set => SetDirection(dir, value);
         }
 
@@ -28,23 +28,31 @@ namespace Wfc
 
         uint _encoded;
 
-        void SetDirection(Direction dir, bool flag)
+        static uint Convert(Axis? axis)
+          => axis == null ? 0u : (uint)axis + 1u;
+
+        Axis? GetDirection(Direction dir)
         {
-            if (flag)
-                _encoded |= (1u << (int)dir);
-            else
-                _encoded &= ~(1u << (int)dir);
+            var bits = (_encoded >> (int)dir * 2) & 3u;
+            return bits == 0u ? null : (Axis?)(bits - 1u);
+        }
+
+        void SetDirection(Direction dir, Axis? axis)
+        {
+            var shift = (int)dir * 2;
+            _encoded &= ~(3u << shift);
+            _encoded |= Convert(axis) << shift;
         }
 
         static Connectivity Rotate(Connectivity con, Pose pose)
         {
             var res = new Connectivity();
-            if (con[Direction.XN]) res[Direction.XN.GetRotated(pose)] = true;
-            if (con[Direction.XP]) res[Direction.XP.GetRotated(pose)] = true;
-            if (con[Direction.YN]) res[Direction.YN.GetRotated(pose)] = true;
-            if (con[Direction.YP]) res[Direction.YP.GetRotated(pose)] = true;
-            if (con[Direction.ZN]) res[Direction.ZN.GetRotated(pose)] = true;
-            if (con[Direction.ZP]) res[Direction.ZP.GetRotated(pose)] = true;
+            res[Direction.XN.GetRotated(pose)] = con[Direction.XN]?.GetRotated(pose);
+            res[Direction.XP.GetRotated(pose)] = con[Direction.XP]?.GetRotated(pose);
+            res[Direction.YN.GetRotated(pose)] = con[Direction.YN]?.GetRotated(pose);
+            res[Direction.YP.GetRotated(pose)] = con[Direction.YP]?.GetRotated(pose);
+            res[Direction.ZN.GetRotated(pose)] = con[Direction.ZN]?.GetRotated(pose);
+            res[Direction.ZP.GetRotated(pose)] = con[Direction.ZP]?.GetRotated(pose);
             return res;
         }
 

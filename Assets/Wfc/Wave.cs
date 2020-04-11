@@ -32,7 +32,7 @@ namespace Wfc
             _observed = State.NewEncoded(state);
         }
 
-        public void ForceDirection(Direction dir, bool flag)
+        public void ForceDirection(Direction dir, Axis? axis)
         {
             for (var i = 0; i < State.Count; i++)
             {
@@ -42,7 +42,7 @@ namespace Wfc
                 var connectivity = ModuleRegistry
                     .GetConnectivity(state.Index).GetRotated(state.Pose);
 
-                if (connectivity[dir] != flag) _bitField.UnsetBit(i);
+                if (connectivity[dir] != axis) _bitField.UnsetBit(i);
             }
         }
 

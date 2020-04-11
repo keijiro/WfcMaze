@@ -83,7 +83,7 @@ namespace Wfc
           => ToDirection((int3)math.round(v));
 
         public static Axis GetRotated(this Axis axis, Pose pose)
-          => _axisPoseTable[(int)pose * AxisCount * (int)axis];
+          => _axisPoseTable[(int)pose * AxisCount + (int)axis];
 
         public static Direction GetRotated(this Direction dir, Pose pose)
           => _dirPoseTable[(int)pose * DirectionCount + (int)dir];
