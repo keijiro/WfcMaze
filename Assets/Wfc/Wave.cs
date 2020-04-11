@@ -42,7 +42,7 @@ namespace Wfc
                 var connectivity = ModuleRegistry
                     .GetConnectivity(state.Index).GetRotated(state.Pose);
 
-                if (connectivity.Check(dir) != flag) _bitField.UnsetBit(i);
+                if (connectivity[dir] != flag) _bitField.UnsetBit(i);
             }
         }
 

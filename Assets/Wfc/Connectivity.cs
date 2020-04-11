@@ -13,8 +13,11 @@ namespace Wfc
                         (yn ? 0x04u : 0u) | (yp ? 0x08u : 0u) |
                         (zn ? 0x10u : 0u) | (zp ? 0x20u : 0u);
 
-        public bool Check(Direction dir)
-          => (_encoded & (1u << (int)dir)) != 0u;
+        public bool this[Direction dir]
+        {
+            get => (_encoded & (1u << (int)dir)) != 0u;
+            set => SetDirection(dir, value);
+        }
 
         public Connectivity GetRotated(Pose pose)
           => Rotate(this, pose);
@@ -25,15 +28,24 @@ namespace Wfc
 
         uint _encoded;
 
-        static Connectivity Rotate(Connectivity source, Pose pose)
+        void SetDirection(Direction dir, bool flag)
         {
-            var encoded = 0u;
-            for (var i = 0; i < Geometry.DirectionCount; i++)
-            {
-                if ((source._encoded & (1u << i)) == 0u) continue;
-                encoded |= 1u << (int)((Direction)i).GetRotated(pose);
-            }
-            return new Connectivity { _encoded = encoded };
+            if (flag)
+                _encoded |= (1u << (int)dir);
+            else
+                _encoded &= ~(1u << (int)dir);
+        }
+
+        static Connectivity Rotate(Connectivity con, Pose pose)
+        {
+            var res = new Connectivity();
+            if (con[Direction.XN]) res[Direction.XN.GetRotated(pose)] = true;
+            if (con[Direction.XP]) res[Direction.XP.GetRotated(pose)] = true;
+            if (con[Direction.YN]) res[Direction.YN.GetRotated(pose)] = true;
+            if (con[Direction.YP]) res[Direction.YP.GetRotated(pose)] = true;
+            if (con[Direction.ZN]) res[Direction.ZN.GetRotated(pose)] = true;
+            if (con[Direction.ZP]) res[Direction.ZP.GetRotated(pose)] = true;
+            return res;
         }
 
         #endregion

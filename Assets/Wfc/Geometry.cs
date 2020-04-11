@@ -3,6 +3,9 @@ using Unity.Mathematics;
 
 namespace Wfc
 {
+    // Axis enums
+    public enum Axis { X, Y, Z }
+
     // Direction enums
     // Axis [X/Y/Z] + Sign [P/N]
     public enum Direction { XN, XP, YN, YP, ZN, ZP }
@@ -20,6 +23,7 @@ namespace Wfc
     {
         #region Count of enums
 
+        public const int AxisCount = 3;
         public const int DirectionCount = 6;
         public const int PoseCount = 3 * 8;
 
@@ -27,18 +31,16 @@ namespace Wfc
 
         #region Direction/Pose helpers
 
-        public static Direction ToDirection(int3 v)
+        public static int3 ToVector(this Axis a)
         {
-            if (v.x < 0) return Direction.XN;
-            if (v.x > 0) return Direction.XP;
-            if (v.y < 0) return Direction.YN;
-            if (v.y > 0) return Direction.YP;
-            if (v.z < 0) return Direction.ZN;
-            return Direction.ZP;
+            switch (a)
+            {
+                case Axis.X : return math.int3(1, 0, 0);
+                case Axis.Y : return math.int3(0, 1, 0);
+                case Axis.Z : return math.int3(0, 0, 1);
+            }
+            return 0; // Error
         }
-
-        public static Direction ToDirection(float3 v)
-          => ToDirection((int3)math.round(v));
 
         public static int3 ToVector(this Direction d)
         {
@@ -57,6 +59,32 @@ namespace Wfc
         public static quaternion ToRotation(this Pose pose)
           => _poseRotation[(int)pose];
 
+        public static Axis ToAxis(int3 v)
+        {
+            if (v.x != 0) return Axis.X;
+            if (v.y != 0) return Axis.Y;
+            return Axis.Z;
+        }
+
+        public static Axis ToAxis(float3 v)
+          => ToAxis((int3)math.round(v));
+
+        public static Direction ToDirection(int3 v)
+        {
+            if (v.x < 0) return Direction.XN;
+            if (v.x > 0) return Direction.XP;
+            if (v.y < 0) return Direction.YN;
+            if (v.y > 0) return Direction.YP;
+            if (v.z < 0) return Direction.ZN;
+            return Direction.ZP;
+        }
+
+        public static Direction ToDirection(float3 v)
+          => ToDirection((int3)math.round(v));
+
+        public static Axis GetRotated(this Axis axis, Pose pose)
+          => _axisPoseTable[(int)pose * AxisCount * (int)axis];
+
         public static Direction GetRotated(this Direction dir, Pose pose)
           => _dirPoseTable[(int)pose * DirectionCount + (int)dir];
 
@@ -69,15 +97,19 @@ namespace Wfc
             .Select(i => CalculatePoseRotation((Pose)i))
             .ToArray();
 
+        static Axis[] _axisPoseTable
+          = Enumerable.Range(0, PoseCount * AxisCount)
+            .Select(i => CalculateRotatedAxis(
+                           (Axis)(i % AxisCount),
+                           (Pose)(i / AxisCount)))
+            .ToArray();
+
         static Direction[] _dirPoseTable
           = Enumerable.Range(0, PoseCount * DirectionCount)
             .Select(i => CalculateRotatedDirection(
                            (Direction)(i % DirectionCount),
                            (Pose     )(i / DirectionCount)))
             .ToArray();
-
-        static Direction CalculateRotatedDirection(Direction dir, Pose pose)
-          => ToDirection(math.mul(CalculatePoseRotation(pose), dir.ToVector()));
 
         static quaternion CalculatePoseRotation(Pose pose)
         {
@@ -93,6 +125,12 @@ namespace Wfc
             else
                 return math.mul(quaternion.RotateY(-hpi), rx);
         }
+
+        static Axis CalculateRotatedAxis(Axis axis, Pose pose)
+          => ToAxis(math.mul(CalculatePoseRotation(pose), axis.ToVector()));
+
+        static Direction CalculateRotatedDirection(Direction dir, Pose pose)
+          => ToDirection(math.mul(CalculatePoseRotation(pose), dir.ToVector()));
 
         #endregion
     }
