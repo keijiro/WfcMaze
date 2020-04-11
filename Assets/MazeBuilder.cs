@@ -61,12 +61,13 @@ sealed class MazeBuilder : MonoBehaviour
         if (!wave.IsObserved) return;
 
         var state = wave.ObservedState;
-        var mesh = GetMesh(state.Index);
-        var pos = math.float3(ix, iy, iz);
+        var pos = math.float3(ix, iy, iz) - 0.5f * _size + 0.5f;
         var rot = state.Pose.ToRotation();
 
-        pos -= math.float3(0.5f, 0.5f, 0.5f) * _size;
-
-        Graphics.DrawMesh(mesh, pos, rot, _material, gameObject.layer);
+        Graphics.DrawMesh(
+          GetMesh(state.Index),
+          math.mul(transform.localToWorldMatrix, math.float4x4(rot, pos)),
+          _material, gameObject.layer
+        );
     }
 }
