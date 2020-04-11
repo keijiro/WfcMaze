@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b283b267c2d08b399b2e616dadc5959, type: 3}
+  m_Name: NoEmpty
+  m_EditorClassIdentifier: 
+  modules:
+  - Mesh: {fileID: -6425600238377421303, guid: 90ba1380f677c9aa28ed7d9791342c63, type: 3}
+    Connectivity:
+      Left: 0
+      Right: 0
+      Bottom: 0
+      Top: 0
+      Back: 1
+      Front: 1
+  - Mesh: {fileID: 2658800326358589857, guid: b2fce23be21f04afaa502ad3cc35c591, type: 3}
+    Connectivity:
+      Left: 0
+      Right: 3
+      Bottom: 0
+      Top: 0
+      Back: 1
+      Front: 0
+  - Mesh: {fileID: -2020707242700487084, guid: 2425972b37c9e7cd7962b9f7e8a6b593, type: 3}
+    Connectivity:
+      Left: 3
+      Right: 3
+      Bottom: 0
+      Top: 0
+      Back: 1
+      Front: 0
+  - Mesh: {fileID: 4104380202958562290, guid: 7828c0dca416ac0d5b14e6c1448e5b00, type: 3}
+    Connectivity:
+      Left: 0
+      Right: 0
+      Bottom: 0
+      Top: 1
+      Back: 1
+      Front: 0
