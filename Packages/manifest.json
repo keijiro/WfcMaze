@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "com.unity.mathematics": "1.2.4"
+    "com.unity.mathematics": "1.2.4",
+    "com.unity.render-pipelines.universal": "12.0.0"
   }
 }
