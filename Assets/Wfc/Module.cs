@@ -12,6 +12,8 @@ namespace Wfc
 
         public static void AddModule(Connectivity conn) => _modules.Add(conn);
 
+        public static void Clear() => _modules.Clear();
+
         #endregion
 
         #region Private members

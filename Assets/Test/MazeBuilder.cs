@@ -14,6 +14,8 @@ sealed class MazeBuilder : MonoBehaviour
 
     System.Collections.IEnumerator Start()
     {
+        ModuleRegistry.Clear();
+
         foreach (var c in _moduleSet.modules.Select(m => m.Connectivity))
             ModuleRegistry.AddModule(new Connectivity
               (c.Left, c.Right, c.Bottom, c.Top, c.Back, c.Front));
