@@ -1,5 +1,3 @@
-using Unity.Mathematics;
-
 namespace Wfc
 {
     // Connectivity information

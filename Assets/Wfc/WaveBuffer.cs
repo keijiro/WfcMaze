@@ -1,4 +1,3 @@
-using System.Linq;
 using Unity.Mathematics;
 
 namespace Wfc

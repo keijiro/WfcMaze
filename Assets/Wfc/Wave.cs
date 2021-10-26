@@ -1,6 +1,3 @@
-using System.Linq;
-using Unity.Mathematics;
-
 namespace Wfc
 {
     public struct Wave
