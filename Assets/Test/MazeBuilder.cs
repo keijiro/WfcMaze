@@ -10,7 +10,8 @@ sealed class MazeBuilder : MonoBehaviour
     [SerializeField] int3 _size = math.int3(10, 10, 10);
     [SerializeField] uint _seed = 1234;
 
-    WaveBuffer _waveBuffer;
+    Wave[] _waves;
+    WaveBuffer Buffer => new WaveBuffer(_waves, _size.x, _size.y, _size.z);
 
     System.Collections.IEnumerator Start()
     {
@@ -20,11 +21,12 @@ sealed class MazeBuilder : MonoBehaviour
             ModuleRegistry.AddModule(new Connectivity
               (c.Left, c.Right, c.Bottom, c.Top, c.Back, c.Front));
 
-        _waveBuffer = new WaveBuffer(_size.x, _size.y, _size.z);
+        _waves = new Wave[_size.x * _size.y * _size.z];
+        Buffer.Reset();
 
         for (var observer = new Observer(_seed);;)
         {
-            observer.Observe(ref _waveBuffer);
+            observer.Observe(Buffer);
             yield return null;
         }
     }
@@ -39,7 +41,7 @@ sealed class MazeBuilder : MonoBehaviour
 
     void DrawWave(int ix, int iy, int iz)
     {
-        var wave = _waveBuffer[ix, iy, iz];
+        var wave = Buffer[ix, iy, iz];
         if (!wave.IsObserved) return;
 
         var state = wave.ObservedState;

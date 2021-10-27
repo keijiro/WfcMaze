@@ -9,7 +9,7 @@ namespace Wfc
         public Observer(uint seed)
           => _random = new Random(seed);
 
-        public void Observe(ref WaveBuffer waves)
+        public void Observe(WaveBuffer waves)
         {
             var min_e = 1e+6f;
             var min_i = -1;
@@ -28,7 +28,7 @@ namespace Wfc
             if (min_i < 0) return;
 
             waves[min_i].Collapse(_random.NextUInt());
-            Propagate(ref waves, min_i);
+            Propagate(waves, min_i);
         }
 
         #endregion
@@ -37,7 +37,7 @@ namespace Wfc
 
         Random _random;
 
-        void Propagate(ref WaveBuffer waves, int index)
+        void Propagate(WaveBuffer waves, int index)
         {
             // Retrieve the wave state.
             var state = waves[index].ObservedState;

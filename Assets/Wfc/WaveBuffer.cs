@@ -1,13 +1,14 @@
 using Unity.Mathematics;
+using System;
 
 namespace Wfc
 {
-    public struct WaveBuffer
+    public ref struct WaveBuffer
     {
         #region Public members
 
         public int3 Dimensions => _dims;
-        public int Length => _waves.Length;
+        public int Length => _storage.Length;
 
         public int3 IndexToCoords(int i)
           => math.int3(i % _dims.x,
@@ -18,21 +19,20 @@ namespace Wfc
           => x + _dims.x * (y + _dims.y * z);
 
         public ref Wave this[int i]
-          => ref _waves[i];
+          => ref _storage[i];
 
         public ref Wave this[int x, int y, int z]
-          => ref _waves[CoordsToIndex(x, y, z)];
+          => ref _storage[CoordsToIndex(x, y, z)];
 
-        public WaveBuffer(int sizeX, int sizeY, int sizeZ)
+        public WaveBuffer(Span<Wave> storage, int sizeX, int sizeY, int sizeZ)
         {
+            _storage = storage;
             _dims = math.int3(sizeX, sizeY, sizeZ);
-            _waves = new Wave[sizeX * sizeY * sizeZ];
-            Reset();
         }
 
         public void Reset()
         {
-            for (var i = 0; i < _waves.Length; i++) this[i].Reset();
+            for (var i = 0; i < Length; i++) this[i].Reset();
 
             // X boundaries
             for (var y = 0; y < _dims.y; y++)
@@ -63,8 +63,8 @@ namespace Wfc
 
         #region Private members
 
+        Span<Wave> _storage;
         int3 _dims;
-        Wave[] _waves;
 
         #endregion
     }
