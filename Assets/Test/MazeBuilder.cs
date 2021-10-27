@@ -20,11 +20,11 @@ sealed class MazeBuilder : MonoBehaviour
             ModuleRegistry.AddModule(new Connectivity
               (c.Left, c.Right, c.Bottom, c.Top, c.Back, c.Front));
 
-        _waveBuffer = new WaveBuffer(_size.x, _size.y, _size.z, _seed);
+        _waveBuffer = new WaveBuffer(_size.x, _size.y, _size.z);
 
-        while (true)
+        for (var observer = new Observer(_seed);;)
         {
-            _waveBuffer.Observe();
+            observer.Observe(ref _waveBuffer);
             yield return null;
         }
     }
@@ -39,7 +39,7 @@ sealed class MazeBuilder : MonoBehaviour
 
     void DrawWave(int ix, int iy, int iz)
     {
-        var wave = _waveBuffer.GetWave(ix, iy, iz);
+        var wave = _waveBuffer[ix, iy, iz];
         if (!wave.IsObserved) return;
 
         var state = wave.ObservedState;
