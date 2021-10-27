@@ -9,7 +9,7 @@ namespace Wfc
         public Observer(uint seed)
           => _random = new Random(seed);
 
-        public void Observe(WaveBuffer waves)
+        public bool Observe(WaveBuffer waves)
         {
             var min_e = 1e+6f;
             var min_i = -1;
@@ -25,10 +25,12 @@ namespace Wfc
                 }
             }
 
-            if (min_i < 0) return;
+            if (min_i < 0) return true;
 
             waves[min_i].Collapse(_random.NextUInt());
             Propagate(waves, min_i);
+
+            return false;
         }
 
         #endregion

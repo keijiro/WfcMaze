@@ -3,6 +3,8 @@ using UnityEngine;
 using Unity.Mathematics;
 using Wfc;
 
+using Stopwatch = System.Diagnostics.Stopwatch;
+
 sealed class MazeBuilder : MonoBehaviour
 {
     [SerializeField] ModuleSet _moduleSet = null;
@@ -13,7 +15,7 @@ sealed class MazeBuilder : MonoBehaviour
     Wave[] _waves;
     WaveBuffer Buffer => new WaveBuffer(_waves, _size.x, _size.y, _size.z);
 
-    System.Collections.IEnumerator Start()
+    void Start()
     {
         ModuleRegistry.Clear();
 
@@ -24,11 +26,14 @@ sealed class MazeBuilder : MonoBehaviour
         _waves = new Wave[_size.x * _size.y * _size.z];
         Buffer.Reset();
 
-        for (var observer = new Observer(_seed);;)
-        {
-            observer.Observe(Buffer);
-            yield return null;
-        }
+        var sw = new Stopwatch();
+        sw.Start();
+
+        var observer = new Observer(_seed);
+        while (!observer.Observe(Buffer)) {}
+
+        sw.Stop();
+        Debug.Log(sw.Elapsed.TotalMilliseconds);
     }
 
     void Update()
