@@ -7,15 +7,15 @@ namespace Wfc
     {
         #region Public members
 
-        public int3 Dimensions => _dims;
-        public int Length => _storage.Length;
+        public readonly int3 Dimensions => _dims;
+        public readonly int Length => _storage.Length;
 
-        public int3 IndexToCoords(int i)
+        public readonly int3 IndexToCoords(int i)
           => math.int3(i % _dims.x,
                        (i / _dims.x) % _dims.y,
                        i / (_dims.x * _dims.y));
 
-        public int CoordsToIndex(int x, int y, int z)
+        public readonly int CoordsToIndex(int x, int y, int z)
           => x + _dims.x * (y + _dims.y * z);
 
         public ref Wave this[int i]

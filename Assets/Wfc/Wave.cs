@@ -4,9 +4,9 @@ namespace Wfc
     {
         #region Public members
 
-        public bool IsObserved => _observed.IsDetermined;
-        public State ObservedState => _observed;
-        public float Entropy => _bitField.CountBits();
+        public readonly bool IsObserved => _observed.IsDetermined;
+        public readonly State ObservedState => _observed;
+        public readonly float Entropy => _bitField.CountBits();
 
         public void Reset()
         {

@@ -13,11 +13,11 @@ namespace Wfc
 
         public Axis this[Direction dir]
         {
-            get => GetDirection(dir);
-            set => SetDirection(dir, value);
+            readonly get => GetDirection(dir);
+                     set => SetDirection(dir, value);
         }
 
-        public Connectivity GetRotated(Pose pose)
+        public readonly Connectivity GetRotated(Pose pose)
           => Rotate(this, pose);
 
         #endregion
@@ -26,7 +26,7 @@ namespace Wfc
 
         uint _encoded;
 
-        Axis GetDirection(Direction dir)
+        readonly Axis GetDirection(Direction dir)
           => (Axis)((_encoded >> (int)dir * 2) & 3u);
 
         void SetDirection(Direction dir, Axis axis)

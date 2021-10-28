@@ -11,9 +11,9 @@ namespace Wfc
 
         public static int Count = Geometry.PoseCount * ModuleRegistry.Count;
 
-        public bool IsDetermined => _value >= 0;
-        public int Index => _value % ModuleRegistry.Count;
-        public Pose Pose => (Pose)(_value / ModuleRegistry.Count);
+        public readonly bool IsDetermined => _value >= 0;
+        public readonly int Index => _value % ModuleRegistry.Count;
+        public readonly Pose Pose => (Pose)(_value / ModuleRegistry.Count);
 
         #endregion
 

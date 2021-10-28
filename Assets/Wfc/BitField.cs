@@ -8,7 +8,7 @@ namespace Wfc
     {
         #region Public methods
 
-        public bool GetBit(int n)
+        public readonly bool GetBit(int n)
           => (_fields[n / 64] & (1ul << (n % 64))) != 0ul;
 
         public void SetBit(int n)
@@ -28,9 +28,9 @@ namespace Wfc
             _fields[bits / 64] = (1ul << (bits % 64)) - 1ul;
         }
 
-        public int CountBits() => CountBits(this);
+        public readonly int CountBits() => CountBits(this);
 
-        public int FindNthOne(int n) => FindNthOne(this, n);
+        public readonly int FindNthOne(int n) => FindNthOne(this, n);
 
         #endregion
 
