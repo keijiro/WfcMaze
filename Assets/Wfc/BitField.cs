@@ -1,6 +1,5 @@
 using Unity.Burst;
-using Unity.Burst.Intrinsics;
-using static Unity.Burst.Intrinsics.Arm.Neon;
+using Unity.Mathematics;
 
 namespace Wfc
 {
@@ -49,7 +48,7 @@ namespace Wfc
         {
             var count = 0;
             for (var i = 0; i < Length; i++)
-                count += CountBitsUL(bf._fields[i]);
+                count += math.countbits(bf._fields[i]);
             return count;
         }
 
@@ -60,16 +59,6 @@ namespace Wfc
             for (var i = 0; i < Length * 64; i++)
                 if (bf.GetBit(i) && count++ == n) return i;
             return -1;
-        }
-
-        static int CountBitsUL(ulong x)
-        {
-            if (IsNeonSupported) return vaddv_u8(vcnt_u8(new v64(x)));
-
-            var count = 0;
-            for (var i = 0; i < 64; i++)
-                if (((1ul << i) & x) != 0) count++;
-            return count;
         }
 
         #endregion
