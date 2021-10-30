@@ -1,25 +1,26 @@
 using System.Collections.Generic;
 
-namespace Wfc
+namespace Wfc {
+
+public static class ModuleRegistry
 {
-    public static class ModuleRegistry
-    {
-        #region Public members
+    #region Public members
 
-        public static int Count => _modules.Count;
+    public static int Count => _modules.Count;
 
-        public static Connectivity GetConnectivity(int i) => _modules[i];
+    public static Connectivity GetConnectivity(int i) => _modules[i];
 
-        public static void AddModule(Connectivity conn) => _modules.Add(conn);
+    public static void AddModule(Connectivity conn) => _modules.Add(conn);
 
-        public static void Clear() => _modules.Clear();
+    public static void Clear() => _modules.Clear();
 
-        #endregion
+    #endregion
 
-        #region Private members
+    #region Private members
 
-        static List<Connectivity> _modules = new List<Connectivity>();
+    static List<Connectivity> _modules = new List<Connectivity>();
 
-        #endregion
-    }
+    #endregion
 }
+
+} //namespace Wfc

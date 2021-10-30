@@ -1,39 +1,40 @@
-namespace Wfc
+namespace Wfc {
+
+public struct State
 {
-    public struct State
-    {
-        //       -1 : Undetermined
-        // 0 -  n-1 : Module with Pose 0
-        // n - 2n-2 : Module with Pose 1
-        // ...
+    //       -1 : Undetermined
+    // 0 -  n-1 : Module with Pose 0
+    // n - 2n-2 : Module with Pose 1
+    // ...
 
-        #region Public properties
+    #region Public properties
 
-        public static int Count = Geometry.PoseCount * ModuleRegistry.Count;
+    public static int Count = Geometry.PoseCount * ModuleRegistry.Count;
 
-        public readonly bool IsDetermined => _value >= 0;
-        public readonly int Index => _value % ModuleRegistry.Count;
-        public readonly Pose Pose => (Pose)(_value / ModuleRegistry.Count);
+    public readonly bool IsDetermined => _value >= 0;
+    public readonly int Index => _value % ModuleRegistry.Count;
+    public readonly Pose Pose => (Pose)(_value / ModuleRegistry.Count);
 
-        #endregion
+    #endregion
 
-        #region Constructor methods
+    #region Constructor methods
 
-        public static State Undetermined
-          => new State { _value = -1 };
+    public static State Undetermined
+      => new State { _value = -1 };
 
-        public static State NewEncoded(int value)
-          => new State { _value = value };
+    public static State NewEncoded(int value)
+      => new State { _value = value };
 
-        public static State NewIndexPose(int index, Pose pose)
-          => new State { _value = (int)pose * ModuleRegistry.Count + index };
+    public static State NewIndexPose(int index, Pose pose)
+      => new State { _value = (int)pose * ModuleRegistry.Count + index };
 
-        #endregion
+    #endregion
 
-        #region Private member
+    #region Private member
 
-        int _value;
+    int _value;
 
-        #endregion
-    }
+    #endregion
 }
+
+} //namespace Wfc
