@@ -100,16 +100,14 @@ public static class Geometry
 
     static Axis[] _axisPoseTable
       = Enumerable.Range(0, PoseCount * AxisCount)
-        .Select(i => CalculateRotatedAxis(
-                       (Axis)(i % AxisCount),
-                       (Pose)(i / AxisCount)))
+        .Select(i => CalculateRotatedAxis((Axis)(i % AxisCount),
+                                          (Pose)(i / AxisCount)))
         .ToArray();
 
     static Direction[] _dirPoseTable
       = Enumerable.Range(0, PoseCount * DirectionCount)
-        .Select(i => CalculateRotatedDirection(
-                       (Direction)(i % DirectionCount),
-                       (Pose     )(i / DirectionCount)))
+        .Select(i => CalculateRotatedDirection((Direction)(i % DirectionCount),
+                                               (Pose     )(i / DirectionCount)))
         .ToArray();
 
     static quaternion CalculatePoseRotation(Pose pose)
