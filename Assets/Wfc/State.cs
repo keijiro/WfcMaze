@@ -1,6 +1,6 @@
 namespace Wfc {
 
-public struct State
+public readonly struct State
 {
     //       -1 : Undetermined
     // 0 -  n-1 : Module with Pose 0
@@ -20,19 +20,21 @@ public struct State
     #region Constructor methods
 
     public static State Undetermined
-      => new State { _value = -1 };
+      => new State(-1);
 
     public static State NewEncoded(int value)
-      => new State { _value = value };
+      => new State(value);
 
     public static State NewIndexPose(int index, Pose pose)
-      => new State { _value = (int)pose * ModuleRegistry.Count + index };
+      => new State((int)pose * ModuleRegistry.Count + index);
 
     #endregion
 
     #region Private member
 
-    int _value;
+    readonly int _value;
+
+    State(int value) => _value = value;
 
     #endregion
 }
