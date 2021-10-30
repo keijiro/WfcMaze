@@ -1,7 +1,7 @@
 namespace Wfc {
 
 // Connectivity information
-public struct Connectivity
+public readonly struct Connectivity
 {
     #region Public methods
 
@@ -10,11 +10,8 @@ public struct Connectivity
                     (uint)yn << 4 | (uint)yp <<  6 |
                     (uint)zn << 8 | (uint)zp << 10;
 
-    public Axis this[Direction dir]
-    {
-        readonly get => GetDirection(dir);
-                 set => SetDirection(dir, value);
-    }
+    public readonly Axis this[Direction dir]
+      => (Axis)((_encoded >> (int)dir * 2) & 3u);
 
     public readonly Connectivity GetRotated(Pose pose)
       => Rotate(this, pose);
@@ -23,28 +20,28 @@ public struct Connectivity
 
     #region Private members
 
-    uint _encoded;
+    readonly uint _encoded;
 
-    readonly Axis GetDirection(Direction dir)
-      => (Axis)((_encoded >> (int)dir * 2) & 3u);
+    Connectivity(uint encoded) => _encoded = encoded;
 
-    void SetDirection(Direction dir, Axis axis)
+    static uint Append(uint encoded, Direction dir, Axis axis)
     {
         var shift = (int)dir * 2;
-        _encoded &= ~(3u << shift);
-        _encoded |= (uint)axis << shift;
+        encoded &= ~(3u << shift);
+        encoded |= (uint)axis << shift;
+        return encoded;
     }
 
     static Connectivity Rotate(Connectivity con, Pose pose)
     {
-        var res = new Connectivity();
-        res[Direction.XN.GetRotated(pose)] = con[Direction.XN].GetRotated(pose);
-        res[Direction.XP.GetRotated(pose)] = con[Direction.XP].GetRotated(pose);
-        res[Direction.YN.GetRotated(pose)] = con[Direction.YN].GetRotated(pose);
-        res[Direction.YP.GetRotated(pose)] = con[Direction.YP].GetRotated(pose);
-        res[Direction.ZN.GetRotated(pose)] = con[Direction.ZN].GetRotated(pose);
-        res[Direction.ZP.GetRotated(pose)] = con[Direction.ZP].GetRotated(pose);
-        return res;
+        var d = 0u;
+        d = Append(d, Direction.XN.GetRotated(pose), con[Direction.XN].GetRotated(pose));
+        d = Append(d, Direction.XP.GetRotated(pose), con[Direction.XP].GetRotated(pose));
+        d = Append(d, Direction.YN.GetRotated(pose), con[Direction.YN].GetRotated(pose));
+        d = Append(d, Direction.YP.GetRotated(pose), con[Direction.YP].GetRotated(pose));
+        d = Append(d, Direction.ZN.GetRotated(pose), con[Direction.ZN].GetRotated(pose));
+        d = Append(d, Direction.ZP.GetRotated(pose), con[Direction.ZP].GetRotated(pose));
+        return new Connectivity(d);
     }
 
     #endregion
