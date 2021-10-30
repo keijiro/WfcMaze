@@ -17,11 +17,8 @@ sealed class MazeBuilder : MonoBehaviour
 
     void Start()
     {
-        ModuleRegistry.Clear();
-
-        foreach (var c in _moduleSet.modules.Select(m => m.Connectivity))
-            ModuleRegistry.AddModule(new Connectivity
-              (c.Left, c.Right, c.Bottom, c.Top, c.Back, c.Front));
+        ModuleRegistry.Reset
+          (_moduleSet.modules.Select(m => (Connectivity)m.Connectivity));
 
         _waves = new Wave[_size.x * _size.y * _size.z];
         Buffer.Reset();

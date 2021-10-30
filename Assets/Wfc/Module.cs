@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Wfc {
 
@@ -6,19 +7,20 @@ public static class ModuleRegistry
 {
     #region Public members
 
-    public static int Count => _modules.Count;
+    public static int Count
+      => _modules.Length;
 
-    public static Connectivity GetConnectivity(int i) => _modules[i];
+    public static Connectivity GetConnectivity(int i)
+      => _modules[i];
 
-    public static void AddModule(Connectivity conn) => _modules.Add(conn);
-
-    public static void Clear() => _modules.Clear();
+    public static void Reset(IEnumerable<Connectivity> e)
+      => _modules = e.ToArray();
 
     #endregion
 
     #region Private members
 
-    static List<Connectivity> _modules = new List<Connectivity>();
+    static Connectivity[] _modules;
 
     #endregion
 }

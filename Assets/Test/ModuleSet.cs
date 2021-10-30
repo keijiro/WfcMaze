@@ -11,6 +11,11 @@ public class ModuleSet : ScriptableObject
         public Wfc.Axis Top;
         public Wfc.Axis Back;
         public Wfc.Axis Front;
+
+        public static explicit operator Wfc.Connectivity(Connectivity c)
+          => new Wfc.Connectivity(c.Left, c.Right,
+                                  c.Bottom, c.Top,
+                                  c.Back, c.Front);
     }
 
     [System.Serializable]
