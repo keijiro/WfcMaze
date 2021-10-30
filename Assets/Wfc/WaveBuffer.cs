@@ -1,14 +1,13 @@
 using Unity.Mathematics;
-using System;
 
 namespace Wfc {
 
-public ref struct WaveBuffer
+public struct WaveBuffer
 {
     #region Public members
 
     public readonly int3 Dimensions => _dims;
-    public readonly int Length => _storage.Length;
+    public readonly int Length => _waves.Length;
 
     public readonly int3 IndexToCoords(int i)
       => math.int3(i % _dims.x,
@@ -19,52 +18,51 @@ public ref struct WaveBuffer
       => x + _dims.x * (y + _dims.y * z);
 
     public ref Wave this[int i]
-      => ref _storage[i];
+      => ref _waves[i];
 
     public ref Wave this[int x, int y, int z]
-      => ref _storage[CoordsToIndex(x, y, z)];
+      => ref _waves[CoordsToIndex(x, y, z)];
 
-    public WaveBuffer(Span<Wave> storage, int sizeX, int sizeY, int sizeZ)
+    public WaveBuffer(int sizeX, int sizeY, int sizeZ)
     {
-        _storage = storage;
+        _waves = new Wave[sizeX * sizeY * sizeZ];
         _dims = math.int3(sizeX, sizeY, sizeZ);
-    }
-
-    public void Reset()
-    {
-        for (var i = 0; i < Length; i++) this[i].Reset();
-
-        // X boundaries
-        for (var y = 0; y < _dims.y; y++)
-            for (var z = 0; z < _dims.z; z++)
-            {
-                this[          0, y, z].ForceDirection(Direction.XN, Axis.None);
-                this[_dims.x - 1, y, z].ForceDirection(Direction.XP, Axis.None);
-            }
-
-        // Y boundaries
-        for (var x = 0; x < _dims.x; x++)
-            for (var z = 0; z < _dims.z; z++)
-            {
-                this[x,           0, z].ForceDirection(Direction.YN, Axis.None);
-                this[x, _dims.y - 1, z].ForceDirection(Direction.YP, Axis.None);
-            }
-
-        // Z boundaries
-        for (var x = 0; x < _dims.x; x++)
-            for (var y = 0; y < _dims.y; y++)
-            {
-                this[x, y,           0].ForceDirection(Direction.ZN, Axis.None);
-                this[x, y, _dims.z - 1].ForceDirection(Direction.ZP, Axis.None);
-            }
+        Reset();
     }
 
     #endregion
 
     #region Private members
 
-    Span<Wave> _storage;
     int3 _dims;
+    Wave[] _waves;
+
+    void Reset()
+    {
+        for (var (i, z) = (0, 0); z < _dims.z; z++)
+        {
+            var (z0, z1) = (z == 0, z == _dims.z - 1);
+
+            for (var y = 0; y < _dims.y; y++)
+            {
+                var (y0, y1) = (y == 0, y == _dims.y - 1);
+
+                for (var x = 0; x < _dims.x; x++, i++)
+                {
+                    var (x0, x1) = (x == 0, x == _dims.x - 1);
+
+                    ref var w = ref _waves[i];
+                    w.Reset();
+                    if (x0) w.ForceDirection(Direction.XN, Axis.None);
+                    if (y0) w.ForceDirection(Direction.YN, Axis.None);
+                    if (z0) w.ForceDirection(Direction.ZN, Axis.None);
+                    if (x1) w.ForceDirection(Direction.XP, Axis.None);
+                    if (y1) w.ForceDirection(Direction.YP, Axis.None);
+                    if (z1) w.ForceDirection(Direction.ZP, Axis.None);
+                }
+            }
+        }
+    }
 
     #endregion
 }

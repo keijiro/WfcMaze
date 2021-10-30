@@ -48,14 +48,14 @@ public struct Observer
 
         // Boundary check
         var p = waves.IndexToCoords(index);
-        var bl = p > 0;
-        var bh = p < waves.Dimensions - 1;
-        if (bl.x) waves[p.x - 1, p.y, p.z].ForceDirection(Direction.XP, conn[Direction.XN]);
-        if (bh.x) waves[p.x + 1, p.y, p.z].ForceDirection(Direction.XN, conn[Direction.XP]);
-        if (bl.y) waves[p.x, p.y - 1, p.z].ForceDirection(Direction.YP, conn[Direction.YN]);
-        if (bh.y) waves[p.x, p.y + 1, p.z].ForceDirection(Direction.YN, conn[Direction.YP]);
-        if (bl.z) waves[p.x, p.y, p.z - 1].ForceDirection(Direction.ZP, conn[Direction.ZN]);
-        if (bh.z) waves[p.x, p.y, p.z + 1].ForceDirection(Direction.ZN, conn[Direction.ZP]);
+        var b0 = p == 0;
+        var b1 = p == waves.Dimensions - 1;
+        if (!b0.x) waves[p.x - 1, p.y, p.z].ForceDirection(Direction.XP, conn[Direction.XN]);
+        if (!b1.x) waves[p.x + 1, p.y, p.z].ForceDirection(Direction.XN, conn[Direction.XP]);
+        if (!b0.y) waves[p.x, p.y - 1, p.z].ForceDirection(Direction.YP, conn[Direction.YN]);
+        if (!b1.y) waves[p.x, p.y + 1, p.z].ForceDirection(Direction.YN, conn[Direction.YP]);
+        if (!b0.z) waves[p.x, p.y, p.z - 1].ForceDirection(Direction.ZP, conn[Direction.ZN]);
+        if (!b1.z) waves[p.x, p.y, p.z + 1].ForceDirection(Direction.ZN, conn[Direction.ZP]);
     }
 
     #endregion

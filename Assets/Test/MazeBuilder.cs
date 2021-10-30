@@ -2,7 +2,6 @@ using System.Linq;
 using UnityEngine;
 using Unity.Mathematics;
 using Wfc;
-
 using Stopwatch = System.Diagnostics.Stopwatch;
 
 sealed class MazeBuilder : MonoBehaviour
@@ -12,22 +11,20 @@ sealed class MazeBuilder : MonoBehaviour
     [SerializeField] int3 _size = math.int3(10, 10, 10);
     [SerializeField] uint _seed = 1234;
 
-    Wave[] _waves;
-    WaveBuffer Buffer => new WaveBuffer(_waves, _size.x, _size.y, _size.z);
+    WaveBuffer _buffer;
 
     void Start()
     {
         ModuleRegistry.Reset
           (_moduleSet.modules.Select(m => (Connectivity)m.Connectivity));
 
-        _waves = new Wave[_size.x * _size.y * _size.z];
-        Buffer.Reset();
+        _buffer = new WaveBuffer(_size.x, _size.y, _size.z);
 
         var sw = new Stopwatch();
         sw.Start();
 
         var observer = new Observer(_seed);
-        while (!observer.Observe(Buffer)) {}
+        while (!observer.Observe(_buffer)) {}
 
         sw.Stop();
         Debug.Log(sw.Elapsed.TotalMilliseconds);
@@ -43,7 +40,7 @@ sealed class MazeBuilder : MonoBehaviour
 
     void DrawWave(int ix, int iy, int iz)
     {
-        var wave = Buffer[ix, iy, iz];
+        var wave = _buffer[ix, iy, iz];
         if (!wave.IsObserved) return;
 
         var state = wave.ObservedState;
